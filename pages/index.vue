@@ -1,12 +1,12 @@
 <template>
   <!-- <Tutorial /> -->
   <div>
-    <nbTabs v-model="modelVal" :tabs="tabs" tabVal="value" tabKey="key" @query="onQuery"
+    <xltabs v-model="modelVal" :tabs="tabs" tabVal="value" tabKey="key" @query="onQuery"
       @change="onChange">
       <ul>
         <li v-for="(item,index) in list" :key="index">{{item.value}}</li>
       </ul>
-    </nbTabs>
+    </xltabs>
   </div>
 </template>
 
@@ -39,20 +39,11 @@ export default {
     }
   },
   methods: {
+    // 滚动触低触发
     onQuery() {
       console.log('触底了')
-      // let num = 10
-      // setTimeout(() => {
-      //   const list = []
-      //   num += 10
-      //   for (let i = 0; i <= num; i++) {
-      //     list.push({ value: '今天是' + ++i + '天' })
-      //   }
-      //   this.list = this.list.concat(list)
-      //   console.log(num, 'num')
-      //   console.log(this.list, 'list')
-      // }, 500)
     },
+    // tab切换触发
     onChange(val) {
       console.log(val, 'val')
     },
