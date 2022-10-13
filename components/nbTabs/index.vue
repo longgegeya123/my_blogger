@@ -137,63 +137,62 @@ export default {
   },
 }
 </script>
-<style lang="scss">
+<style>
 .xl-tabs-person {
   box-sizing: border-box;
   overflow: hidden;
   font-family: Open Sans, -apple-system, BlinkMacSystemFont, Helvetica Neue,
     Helvetica, Segoe UI, Arial, Roboto, PingFang SC, miui, Hiragino Sans GB,
     Microsoft Yahei, sans-serif;
-  // background-color: #f7f8fa;
   -webkit-font-smoothing: antialiased;
-  .tabs-title {
-    overflow: hidden;
-    .tabs-title-wrap {
-      padding-bottom: 15px;
-      position: relative;
-      box-sizing: content-box;
-      display: flex;
-      height: 100%;
-      box-sizing: content-box;
-      overflow-y: hidden;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      user-select: none;
-      .tabs-title-wrap-item {
-        position: relative;
-        display: flex;
-        flex-wrap: nowrap;
-        flex: 1;
-        flex-grow: 1;
-        flex-shrink: 0;
-        flex-basis: auto;
-        justify-content: center;
-        align-items: center;
-        color: #646566;
-        font-size: 14px;
-        cursor: pointer;
-        box-sizing: border-box;
-      }
-      .tab-item-active {
-        color: #323233;
-        font-weight: 500;
-      }
-      .tabs__line {
-        position: absolute;
-        bottom: 15px;
-        left: 0;
-        z-index: 1;
-        width: 30px;
-        height: 2px;
-        border-radius: 2px;
-      }
-    }
-  }
-  .tabs-con {
-    min-height: 200px;
-    height: 300px;
-    width: 100%;
-    overflow-y: scroll;
-  }
+}
+.tabs-title {
+  overflow: hidden;
+}
+.tabs-title > .tabs-title-wrap {
+  padding-bottom: 15px;
+  position: relative;
+  box-sizing: content-box;
+  display: flex;
+  height: 100%;
+  box-sizing: content-box;
+  overflow-y: hidden;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  user-select: none;
+}
+.tabs-title > .tabs-title-wrap > .tabs-title-wrap-item {
+  position: relative;
+  display: flex;
+  flex-wrap: nowrap;
+  flex: 1;
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: auto;
+  justify-content: center;
+  align-items: center;
+  color: #646566;
+  font-size: 14px;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+.tabs-title > .tabs-title-wrap > .tab-item-active {
+  color: #323233;
+  font-weight: 500;
+}
+.tabs-title > .tabs-title-wrap > .tabs__line {
+  position: absolute;
+  bottom: 15px;
+  left: 0;
+  z-index: 1;
+  width: 30px;
+  height: 2px;
+  border-radius: 2px;
+}
+.tabs-con {
+  min-height: 200px;
+  height: 300px;
+  width: 100%;
+  overflow-y: scroll;
 }
 </style>
