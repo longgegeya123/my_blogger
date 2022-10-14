@@ -1,12 +1,12 @@
 <template>
   <!-- <Tutorial /> -->
   <div>
-    <xltabs v-model="modelVal" :tabs="tabs" tabVal="value" tabKey="key" @query="onQuery"
+    <Xltabs v-model="modelVal" :tabs="tabs" tabVal="value" tabKey="key" @query="onQuery"
       @change="onChange">
       <ul>
         <li v-for="(item,index) in list" :key="index">{{item.value}}</li>
       </ul>
-    </xltabs>
+    </Xltabs>
   </div>
 </template>
 
@@ -46,6 +46,14 @@ export default {
     // tab切换触发
     onChange(val) {
       console.log(val, 'val')
+    },
+    getInit() {
+      const xml = new XMLHttpRequest()
+      xml.open(
+        'GET',
+        'http://123.57.67.7/bidprocurement/procurement-purchasplan/purchasePlanDetailsPack/getPurchasePlanDetailsWaitPackCustomList'
+      )
+      xml.send()
     },
   },
 }
