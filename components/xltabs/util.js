@@ -24,7 +24,9 @@ var bindSwipeEvent = function (dom, leftCallback, rightCallback) {
   });
 };
 var pageScroll = function (dom, bottomFlag, callback) {
-  const h = dom.scrollHeight
+  if (!dom.children[0]) return
+  const _dom = dom.children[0]
+  const h = _dom.scrollHeight
   dom.onscroll = function (ev) {
     if (h - ev.target.scrollTop - dom.clientHeight < bottomFlag) {
       shake(callback)

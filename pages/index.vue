@@ -1,16 +1,17 @@
 <template>
   <!-- <Tutorial /> -->
   <div>
-    <Xltabs v-model="modelVal" :tabs="tabs" tabVal="value" tabKey="key" @query="onQuery"
-      @change="onChange">
+    <xltabs v-model="modelVal" :tabs="tabs" :tabList="list" tabVal="value" tabKey="key"
+      @query="onQuery" @change="onChange">
       <ul>
-        <li v-for="(item,index) in list" :key="index">{{item.value}}</li>
+        <li v-for="(item,index) in list" :key="index">{{item.purchaseNo}}</li>
       </ul>
-    </Xltabs>
+    </xltabs>
   </div>
 </template>
 
 <script>
+import Ajax from '~/assets/ajax/index.js'
 export default {
   name: 'IndexPage',
   data() {
@@ -30,17 +31,28 @@ export default {
           key: '6',
         },
       ],
+      params: {
+        deliveryTime: [],
+        datePicker: [],
+        approvalTime: [],
+        returnedTime: [],
+        changedTime: [],
+        queryStatus: '00',
+        isFrame: '00',
+        pageNo: 1,
+        pageSize: 10,
+      },
       list: [],
     }
   },
   created() {
-    for (let i = 0; i <= 30; i++) {
-      this.list.push({ value: '今天是' + ++i + '天' })
-    }
+    this.getInit()
   },
   methods: {
     // 滚动触低触发
     onQuery() {
+      this.params.pageNo += 1
+      this.getInit()
       console.log('触底了')
     },
     // tab切换触发
@@ -48,12 +60,12 @@ export default {
       console.log(val, 'val')
     },
     getInit() {
-      const xml = new XMLHttpRequest()
-      xml.open(
-        'GET',
-        'http://123.57.67.7/bidprocurement/procurement-purchasplan/purchasePlanDetailsPack/getPurchasePlanDetailsWaitPackCustomList'
-      )
-      xml.send()
+      Ajax('POST', '', this.params).then((res) => {
+        const {
+          data: { records },
+        } = JSON.parse(res)
+        this.list = this.list.concat(records)
+      })
     },
   },
 }

@@ -25,117 +25,136 @@
   </div>
 </template>
 <script>
-import { bindSwipeEvent, pageScroll } from './util';
+import { bindSwipeEvent, pageScroll } from './util'
 export default {
   name: 'XlTabs',
   props: {
     modelVal: {
       type: Number | String,
-      required: true
+      required: true,
     },
     tabs: {
       type: Array,
-      required: true
+      required: true,
+    },
+    // 异步获取内容数据
+    tabList: {
+      type: Array,
+      default: () => [],
     },
     // 展示tab内容key
     tabVal: {
       type: String,
-      required: true
+      required: true,
     },
     // tabs高度
     titleHeight: {
       type: String,
-      default: '44px'
+      default: '44px',
     },
     // tabs地边框样式
     titleBorderBottom: {
       type: String,
-      default: '1px solid darkgray'
+      default: '1px solid darkgray',
     },
     // 标尺线颜色
     lineBgColor: {
       type: String,
-      default: 'rgb(111,121,164)'
+      default: 'rgb(111,121,164)',
     },
     // tabs背景色
     tabsBgColor: {
       type: String,
-      default: '#f7f8fa'
+      default: '#f7f8fa',
     },
     // 触底阈值
     bottomFlag: {
       type: Number,
-      default: 120
-    }
+      default: 20,
+    },
   },
   model: {
     prop: 'modelVal',
-    event: 'change'
+    event: 'change',
   },
   data() {
     return {
       lateX: '0',
-      active: 0
-    };
+      active: 0,
+    }
+  },
+  watch: {
+    getLen: {
+      handler(val) {
+        const that = this
+        this.$nextTick(() => {
+          pageScroll(
+            document.querySelector('.tabs-con'),
+            that.bottomFlag,
+            function () {
+              that.$emit('query')
+            }
+          )
+        })
+      },
+    },
   },
   created() {
-    this.active = Number(this.modelVal);
+    this.active = Number(this.modelVal)
+  },
+  computed: {
+    getLen() {
+      return this.tabList.length
+    },
   },
   mounted() {
-    const that = this;
-    that.getWidth('.tabs-title-wrap-item');
-    const maxNum = this.tabs.length - 1;
+    const that = this
+    that.getWidth('.tabs-title-wrap-item')
+    const maxNum = this.tabs.length - 1
     bindSwipeEvent(
       document.querySelector('.tabs-con'),
       function leftCallback(ev) {
         if (that.active <= 0) {
-          that.active = 0;
+          that.active = 0
         } else {
-          that.active -= 1;
+          that.active -= 1
         }
-        that.getWidth('.tabs-title-wrap-item');
+        that.getWidth('.tabs-title-wrap-item')
       },
       function rightCallback(ev) {
         if (that.active >= maxNum) {
-          that.active = maxNum;
+          that.active = maxNum
         } else {
-          that.active += 1;
+          that.active += 1
         }
-        that.getWidth('.tabs-title-wrap-item');
+        that.getWidth('.tabs-title-wrap-item')
       }
-    );
-    pageScroll(
-      document.querySelector('.tabs-con'),
-      that.bottomFlag,
-      function () {
-        that.$emit('query');
-      }
-    );
+    )
   },
   methods: {
     onItem(index) {
-      this.active = index;
-      this.getWidth('.tabs-title-wrap-item');
+      this.active = index
+      this.getWidth('.tabs-title-wrap-item')
     },
     lateXMethods(l, w) {
-      this.lateX = Math.floor(l + w / 2);
+      this.lateX = Math.floor(l + w / 2)
     },
     getWidth(className) {
       this.$nextTick(() => {
-        const dom = document.querySelectorAll(className);
-        const active = this.active <= 0 ? 0 : this.active;
-        const doms = Array.from(dom).slice(0, active);
-        const w = dom[this.active].offsetWidth;
-        var totalWidth = 0;
+        const dom = document.querySelectorAll(className)
+        const active = this.active <= 0 ? 0 : this.active
+        const doms = Array.from(dom).slice(0, active)
+        const w = dom[this.active].offsetWidth
+        var totalWidth = 0
         for (const item of doms.values()) {
-          totalWidth += item.offsetWidth;
+          totalWidth += item.offsetWidth
         }
-        this.lateXMethods(totalWidth, w);
-        this.$emit('change', this.active);
-      });
-    }
-  }
-};
+        this.lateXMethods(totalWidth, w)
+        this.$emit('change', this.active)
+      })
+    },
+  },
+}
 </script>
 <style>
 .xl-tabs-person {
