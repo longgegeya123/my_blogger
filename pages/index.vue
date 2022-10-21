@@ -1,5 +1,4 @@
 <template>
-  <!-- <Tutorial /> -->
   <div>
     <xltabs v-model="modelVal" :tabs="tabs" :tabList="list" tabVal="value" tabKey="key"
       @query="onQuery" @change="onChange">
@@ -12,6 +11,7 @@
 
 <script>
 import Ajax from '~/assets/ajax/index.js'
+import axios from 'axios'
 export default {
   name: 'IndexPage',
   data() {
@@ -45,7 +45,43 @@ export default {
       list: [],
     }
   },
+  // asyncData() {
+  //   // let list = []
+  //   let params = {
+  //     deliveryTime: [],
+  //     datePicker: [],
+  //     approvalTime: [],
+  //     returnedTime: [],
+  //     changedTime: [],
+  //     queryStatus: '00',
+  //     isFrame: '00',
+  //     pageNo: 1,
+  //     pageSize: 10,
+  //   }
+  //   return axios
+  //     .post(
+  //       'http://123.57.67.7/bidprocurement/procurement-purchasplan/purchasePlanDetailsPack/getPurchasePlanDetailsWaitPackCustomList',
+  //       params,
+  //       {
+  //         headers: {
+  //           'X-AUTH-TOKEN':
+  //             '7f92518a677b408f9554ac8bab282e47_eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJqaWNhaSIsInN1YiI6ImppY2FpIiwiaWF0IjoxNjY2MzM3MTE1fQ.CXrVs9tv4455nUQsT4Tcu3t_eXSxCq7cATdTLmRBvWA',
+  //         },
+  //       }
+  //     )
+  //     .then((res) => {
+  //       return {
+  //         list: res.data.data.records,
+  //       }
+  //       // console.log(
+  //       //   res.data.data.records,
+  //       //   '..................................asyncData'
+  //       // )
+  //     })
+  // },
   created() {
+    this.$cookies.set('token', 'nnnn')
+    this.$store.commit('M_UPDATE_TOKEN', 'nnn')
     this.getInit()
   },
   methods: {
@@ -60,7 +96,12 @@ export default {
       console.log(val, 'val')
     },
     getInit() {
-      Ajax('POST', '', this.params).then((res) => {
+      console.log(this.$store.state.token, '-----------------')
+      Ajax(
+        'POST',
+        'purchasePlanDetailsPack/getPurchasePlanDetailsWaitPackCustomList',
+        this.params
+      ).then((res) => {
         const {
           data: { records },
         } = JSON.parse(res)

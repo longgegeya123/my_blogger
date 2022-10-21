@@ -1,9 +1,11 @@
 export default function Ajax (mathod = 'GET', url = '', data = {}) {
   return new Promise((resolve, reject) => {
+    const baseUrl = ''
+    const token = '7f92518a677b408f9554ac8bab282e47_eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJqaWNhaSIsInN1YiI6ImppY2FpIiwiaWF0IjoxNjY2MzM3MTE1fQ.CXrVs9tv4455nUQsT4Tcu3t_eXSxCq7cATdTLmRBvWA'
     const xml = new XMLHttpRequest()
-    xml.open(mathod, url, true)
+    xml.open(mathod, baseUrl + url, true)
     xml.setRequestHeader("Content-type", "application/json;charset=UTF-8");
-    xml.setRequestHeader("X-AUTH-TOKEN", "7f92518a677b408f9554ac8bab282e47_eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJqaWNhaSIsInN1YiI6ImppY2FpIiwiaWF0IjoxNjY1OTcyNjE1fQ.AHlzBv03ExBG37qeBtJR248oIqht0sxGNVU4qYT8QOA");
+    xml.setRequestHeader("X-AUTH-TOKEN", token);
     xml.send(JSON.stringify(data))
     xml.onreadystatechange = function () {
       if (xml.readyState === 4) { // 成功完成
