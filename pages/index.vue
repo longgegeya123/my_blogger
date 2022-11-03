@@ -82,7 +82,14 @@ export default {
   created() {
     this.$cookies.set('token', 'nnnn')
     this.$store.commit('M_UPDATE_TOKEN', 'nnn')
-    this.getInit()
+    console.log('1111111111')
+  },
+  mounted() {
+    setTimeout(
+      function () {
+        this.getInit()
+      }.bind(this)
+    )
   },
   methods: {
     // 滚动触低触发

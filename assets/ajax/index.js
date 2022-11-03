@@ -1,4 +1,9 @@
+import { state } from '~/store'
 export default function Ajax (mathod = 'GET', url = '', data = {}) {
+  console.log('222222222222');
+  console.log(state, 'state-------------------');
+  const cookie = require('cookie')
+  console.log(cookie.parse('token'), '---------------------------cookie');
   return new Promise((resolve, reject) => {
     const baseUrl = ''
     const token = '7f92518a677b408f9554ac8bab282e47_eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJqaWNhaSIsInN1YiI6ImppY2FpIiwiaWF0IjoxNjY2MzM3MTE1fQ.CXrVs9tv4455nUQsT4Tcu3t_eXSxCq7cATdTLmRBvWA'
