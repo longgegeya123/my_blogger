@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="page">
+    <canvas id="mycanvas"></canvas>
   </div>
 </template>
 
@@ -9,120 +10,139 @@ import axios from 'axios'
 export default {
   name: 'IndexPage',
   data() {
-    return {
-      modelVal: '0',
-      tabs: [
-        {
-          value: '区域入侵',
-          key: '4',
-        },
-        {
-          value: '人员聚集',
-          key: '5',
-        },
-        {
-          value: '违规停车',
-          key: '6',
-        },
-      ],
-      params: {
-        deliveryTime: [],
-        datePicker: [],
-        approvalTime: [],
-        returnedTime: [],
-        changedTime: [],
-        queryStatus: '00',
-        isFrame: '00',
-        pageNo: 1,
-        pageSize: 10,
-      },
-      list: [],
-    }
+    return {}
   },
-  // asyncData() {
-  //   // let list = []
-  //   let params = {
-  //     deliveryTime: [],
-  //     datePicker: [],
-  //     approvalTime: [],
-  //     returnedTime: [],
-  //     changedTime: [],
-  //     queryStatus: '00',
-  //     isFrame: '00',
-  //     pageNo: 1,
-  //     pageSize: 10,
-  //   }
-  //   return axios
-  //     .post(
-  //       'http://123.57.67.7/bidprocurement/procurement-purchasplan/purchasePlanDetailsPack/getPurchasePlanDetailsWaitPackCustomList',
-  //       params,
-  //       {
-  //         headers: {
-  //           'X-AUTH-TOKEN':
-  //             '7f92518a677b408f9554ac8bab282e47_eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJqaWNhaSIsInN1YiI6ImppY2FpIiwiaWF0IjoxNjY2MzM3MTE1fQ.CXrVs9tv4455nUQsT4Tcu3t_eXSxCq7cATdTLmRBvWA',
-  //         },
-  //       }
-  //     )
-  //     .then((res) => {
-  //       return {
-  //         list: res.data.data.records,
-  //       }
-  //       // console.log(
-  //       //   res.data.data.records,
-  //       //   '..................................asyncData'
-  //       // )
-  //     })
-  // },
-  created() {
-    this.$cookies.set('token', 'nnnn')
-    this.$store.commit('M_UPDATE_TOKEN', 'nnn')
-    console.log('1111111111')
-  },
+  created() {},
   mounted() {
-    setTimeout(
+    var canvas = mycanvas
+    /*获取屏幕宽高。用作适配*/
+    var w = window.innerWidth - 10
+    var h = window.innerHeight - 5
+    canvas.width = w
+    canvas.height = h
+    canvas.backgroundColor = '#000'
+    var ctx = canvas.getContext('2d')
+
+    function Build() {
+      this.ctx = ctx
+      this.counts = 300 //最大粒子数
+      this.maxSize = 4 //初始化最大的大小
+      ;(this.halfWidth = w / 2), (this.halfHeight = h / 2)
+      this.arr = [] //用于存储变量
+    }
+    Build.prototype.add = function (coor) {
+      var grd = this.ctx.createRadialGradient(
+        coor.x,
+        coor.y,
+        coor.size / 2,
+        coor.x,
+        coor.y,
+        coor.size
+      )
+      grd.addColorStop(0, 'white')
+      grd.addColorStop(1, coor.color)
+      this.ctx.fillStyle = grd
+      this.ctx.beginPath()
+      this.ctx.arc(coor.x, coor.y, coor.size, 0, Math.PI * 2, true)
+      this.ctx.transform(1, 0, 0, 1, 0, coor.z)
+      this.ctx.closePath()
+      this.ctx.fill()
+    }
+    Build.prototype.init = function () {
+      this.run()
+      this.render()
+      this.animate()
+    }
+    Build.prototype.run = function () {
+      var nums = 0
+      while (nums < this.counts) {
+        var coor = {
+          x: Math.ceil(Math.random() * w),
+          y: Math.ceil(Math.random() * h),
+          posx: Math.random() * w - this.halfWidth,
+          posy: Math.random() * h - this.halfHeight,
+          fl: 100,
+          speed: Math.random() * 2,
+          posz: Math.random() * 250,
+          r: Math.ceil(Math.random() * this.maxSize),
+          color:
+            'rgba(' +
+            Math.ceil(Math.random() * 255) +
+            ',' +
+            Math.ceil(Math.random() * 255) +
+            ',' +
+            Math.ceil(Math.random() * 255) +
+            ',' +
+            Math.random() +
+            ')',
+        }
+        this.arr.push(coor)
+        nums++
+      }
+    }
+    Build.prototype.clear = function () {
+      ctx.clearRect(0, 0, w, h)
+    }
+    Build.prototype.render = function () {
+      this.clear()
+      for (var item of this.arr) {
+        this.draw(item)
+      }
+    }
+    ;(Build.prototype.animate = function () {
+      var _this = this
+      this.render()
+      /*api自带方法*/
+      window.requestAnimationFrame(function () {
+        _this.animate()
+      })
+    }),
+      (Build.prototype.draw = function (item) {
+        if (item.posz > -item.fl) {
+          /*连续修改scale，保持变化，用于控制量子大小，在屏幕上的位置*/
+          var scale = item.fl / (item.fl + item.posz)
+          /*修改对应数据*/
+          item.x = this.halfWidth + item.posx * scale
+          item.y = this.halfHeight + item.posy * scale
+          item.size = item.r * scale
+          item.posz -= item.speed
+        } else {
+          /*初始化超出屏幕的量子。达成屏幕量子数量保持衡量的方法*/
+          item.posz = Math.random() * 250
+        }
+        this.add(item)
+      })
+    var app = new Build()
+    app.init()
+    window.addEventListener(
+      'resize',
       function () {
-        this.getInit()
-      }.bind(this)
+        canvas.width = w = window.innerWidth
+        canvas.height = h = window.innerHeight
+      },
+      false
     )
   },
-  methods: {
-    // 滚动触低触发
-    onQuery() {
-      this.params.pageNo += 1
-      this.getInit()
-      console.log('触底了')
-    },
-    // tab切换触发
-    onChange(val) {
-      console.log(val, 'val')
-    },
-    getInit() {
-      console.log(this.$store.state.token, '-----------------')
-      Ajax(
-        'POST',
-        'purchasePlanDetailsPack/getPurchasePlanDetailsWaitPackCustomList',
-        this.params
-      ).then((res) => {
-        const {
-          data: { records },
-        } = JSON.parse(res)
-        this.list = this.list.concat(records)
-      })
-    },
-  },
+  methods: {},
 }
 </script>
 <style lang="scss">
-ul {
-  margin: 0;
+* {
   padding: 0;
+  margin: 0;
 }
-ul li {
-  list-style: none;
-  height: 50px;
-  width: 100%;
-  line-height: 50px;
-  text-align: center;
-  border-bottom: 1px solid seagreen;
+.page {
+  background-image: -webkit-radial-gradient(
+    ellipse farthest-corner at center top,
+    #000d4d 0%,
+    #000105 100%
+  );
+  background-image: radial-gradient(
+    ellipse farthest-corner at center top,
+    #000d4d 0%,
+    #000105 100%
+  );
+  overflow: hidden;
+  box-sizing: border-box;
 }
 </style>
