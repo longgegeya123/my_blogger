@@ -13,12 +13,14 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.13.6",
+    "axios": "^0.15.3",
+    "cookie-universal-nuxt": "^2.2.2",
     "core-js": "^3.25.3",
     "nuxt": "^2.15.8",
     "vue": "^2.7.10",
     "vue-server-renderer": "^2.7.10",
     "vue-template-compiler": "^2.7.10",
-    "xltabs": "^1.0.2"
+    "xltabs": "^1.0.3"
   },
   "devDependencies": {
     "eslint-config-prettier": "^8.5.0",

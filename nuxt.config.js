@@ -19,7 +19,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    // { src: '~/plugins/xlTabs' }
+    { src: '~/plugins/xlTabs' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -32,6 +32,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    'cookie-universal-nuxt'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -42,6 +43,6 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    // transpile: ['xltabs']
+    transpile: ['xltabs']
   },
 }
