@@ -1,11 +1,5 @@
 <template>
   <div>
-    <xltabs v-model="modelVal" :tabs="tabs" :tabList="list" tabVal="value" tabKey="key"
-      @query="onQuery" @change="onChange">
-      <ul>
-        <li v-for="(item,index) in list" :key="index">{{item.purchaseNo}}</li>
-      </ul>
-    </xltabs>
   </div>
 </template>
 
