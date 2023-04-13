@@ -5,8 +5,6 @@
 </template>
 
 <script>
-import Ajax from '~/assets/ajax/index.js'
-import axios from 'axios'
 export default {
   name: 'IndexPage',
   data() {
